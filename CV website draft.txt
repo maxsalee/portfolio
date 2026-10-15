@@ -1,0 +1,38 @@
+Help me design and publish a personal CV website using HTML, CSS, and Javascript. The website should serve as a self introduction and showcase my backgrounds, skills and experiences.
+
+There are 7 required sections for the personal CV website (introduction, skills, education, achievemetns, work experience, project experience, and hobbies)
+Here are some information regarding each part of the CV,
+
+introdcutoin:
+My name is Lee Cheuk Ki 李卓其 (Max Lee in English), born on 17/4/2010, (currently 16 years old)
+- phone number: 56297028
+- email: maxcklee.hk@gmail.com
+- location: Hong Kong
+- Current status: Secondary 5 student
+- Short personality profile: I am a critical thinker and enjoy solving problems
+
+Skills: 
+have basic coding skills (python and html), have experience using excel, proficient in english
+
+Education:
+secondary school: The Hong Kong Chinese Christain Churches Union Logos Academy (~Band 1C school); participated in school student union election
+Represented the school for multiple competitions, including IMMC (International Mathematical Modelling Challenge), Poly U scinece talents competition
+Academic performance:
+	S4:  Physics 1st in form, Additional Maths 1st in form
+
+Achievements:
+	Hong Kong Physics Olympaid 3rd honour
+	Achieved a level of 5dan in the game of Go (WeiQi)
+
+Work experience:
+	Learnt how to code using vibecoding at internship (Sanfield)
+
+Project experience:
+IB CAS project: self initiated a project to go to local children community center to demonstrate and teach them science experiments [project not yet finished]
+IB EE project: Formulated and investigated a 4,000-word research paper about [fill blank first, project not finished]
+
+Hobbies: 
+Played the gmae GO for 12 years, and won numerous GO competitions, achieving a rank of 5dan
+Played table tennis for 2 years
+
+Those are the 7 sections that I thought about, tell me if you need more information about me.

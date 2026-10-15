@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Max Lee — Personal CV</title>
+<meta name="description" content="Personal CV of Lee Cheuk Ki (Max Lee), a Secondary 5 student at Logos Academy in Hong Kong." data-i18n-content="meta.desc">
+<meta name="theme-color" content="#fbfaf7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b5c8f'/%3E%3Ctext x='16' y='22.5' font-family='Georgia,serif' font-size='17' font-weight='600' fill='%23ffffff' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+/* Set the theme before first paint so there is no flash of the wrong colours. */
+(function () {
+  var root = document.documentElement;
+  root.classList.add("js");
+
+  // 1. An explicit choice the visitor made on a previous visit wins.
+  var theme = null;
+  try { theme = window.localStorage.getItem("cv-theme"); } catch (e) { /* storage unavailable */ }
+
+  // 2. Otherwise follow the operating system. Kept separate from the read
+  //    above so that a blocked localStorage cannot suppress this preference.
+  if (theme !== "light" && theme !== "dark") {
+    var prefersDark = false;
+    try {
+      prefersDark = !!(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    } catch (e) { /* matchMedia unavailable: stay light */ }
+    theme = prefersDark ? "dark" : "light";
+  }
+
+  root.setAttribute("data-theme", theme);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", theme === "dark" ? "#101419" : "#fbfaf7");
+})();
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#intro" data-i18n="a11y.skip">Skip to content</a>
+
+<div class="layout">
+
+  <!-- ============ Sidebar (desktop) / top bar (mobile) ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__head">
+      <a class="brand" href="#intro">
+        <span class="brand__name" data-i18n="hero.name">Max Lee</span>
+        <span class="brand__alt" data-i18n="hero.nameAlt">Lee Cheuk Ki &middot; 李卓其</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar-nav" data-i18n-aria-label="a11y.menu">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="sidebar__panel">
+      <p class="sidebar__status" data-i18n="hero.eyebrow">Secondary 5 Student &middot; Hong Kong</p>
+
+      <nav class="nav" id="sidebar-nav" data-i18n-aria-label="a11y.nav">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#intro" data-i18n="nav.intro">Introduction</a></li>
+          <li><a class="nav__link" href="#skills" data-i18n="nav.skills">Skills</a></li>
+          <li><a class="nav__link" href="#education" data-i18n="nav.education">Education</a></li>
+          <li><a class="nav__link" href="#achievements" data-i18n="nav.achievements">Achievements</a></li>
+          <li><a class="nav__link" href="#work" data-i18n="nav.work">Work Experience</a></li>
+          <li><a class="nav__link" href="#projects" data-i18n="nav.projects">Project Experience</a></li>
+          <li><a class="nav__link" href="#hobbies" data-i18n="nav.hobbies">Hobbies</a></li>
+        </ul>
+      </nav>
+
+      <div class="controls" role="group" data-i18n-aria-label="ui.controls">
+
+        <div class="lang" role="group" data-i18n-aria-label="a11y.lang">
+          <button type="button" class="lang__btn" data-lang="en" aria-pressed="true" lang="en" title="English">EN</button>
+          <button type="button" class="lang__btn" data-lang="zh-Hant" aria-pressed="false" lang="zh-Hant" title="繁體中文">繁</button>
+          <button type="button" class="lang__btn" data-lang="zh-Hans" aria-pressed="false" lang="zh-Hans" title="简体中文">简</button>
+        </div>
+
+        <div class="controls__row">
+          <button type="button" class="icon-btn theme-toggle" aria-pressed="false"
+                  data-i18n-aria-label="ui.theme" data-i18n-title="ui.themeHint">
+            <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+            </svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" width="16" height="16"
+                 fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/>
+            </svg>
+          </button>
+
+          <button type="button" class="icon-btn" data-print data-i18n-title="ui.pdfHint">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v11"/><path d="M8 11l4 4 4-4"/><path d="M4 20h16"/>
+            </svg>
+            <span data-i18n="ui.pdf">Download PDF</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div class="content">
+
+      <!-- ============ 01 Introduction ============ -->
+      <header class="section hero reveal" id="intro">
+        <p class="hero__eyebrow">
+          <span class="section__num">01</span>
+          <span data-i18n="nav.intro">Introduction</span>
+        </p>
+        <h1 class="hero__name" data-i18n="hero.name">Max Lee</h1>
+        <p class="hero__alt" data-i18n="hero.nameAlt">Lee Cheuk Ki &middot; 李卓其</p>
+        <p class="hero__lead" data-i18n="hero.lead">I am a critical thinker and enjoy solving problems.</p>
+        <p class="hero__intro" data-i18n="hero.intro">A Secondary 5 student at The Hong Kong Chinese Christian Churches Union Logos Academy, with a particular interest in physics and mathematics.</p>
+
+        <dl class="info" data-i18n-aria-label="a11y.contact">
+          <div class="info__item">
+            <dt data-i18n="info.phone">Phone</dt>
+            <dd><a href="tel:+85256297028">56297028</a></dd>
+          </div>
+          <div class="info__item">
+            <dt data-i18n="info.email">Email</dt>
+            <dd><a href="mailto:maxcklee.hk@gmail.com">maxcklee.hk@gmail.com</a></dd>
+          </div>
+          <div class="info__item">
+            <dt data-i18n="info.location">Location</dt>
+            <dd data-i18n="info.locationVal">Hong Kong</dd>
+          </div>
+          <div class="info__item">
+            <dt data-i18n="info.status">Status</dt>
+            <dd data-i18n="info.statusVal">Secondary 5 student</dd>
+          </div>
+        </dl>
+      </header>
+
+      <!-- ============ 02 Skills ============ -->
+      <section class="section reveal" id="skills">
+        <div class="section__head">
+          <span class="section__num">02</span>
+          <h2 class="section__title" data-i18n="nav.skills">Skills</h2>
+        </div>
+        <p class="section__lead" data-i18n="skills.lead">What I can currently do, with an honest indication of my level.</p>
+
+        <div class="cards">
+          <div class="card">
+            <h3 class="card__title" data-i18n="skills.g1">Programming</h3>
+            <ul class="rows">
+              <li class="row">
+                <span class="row__name" data-i18n="skills.python">Python</span>
+                <span class="chip" data-i18n="skills.pythonLvl">Basic</span>
+              </li>
+              <li class="row">
+                <span class="row__name" data-i18n="skills.html">HTML</span>
+                <span class="chip" data-i18n="skills.htmlLvl">Basic</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="skills.g2">Tools</h3>
+            <ul class="rows">
+              <li class="row">
+                <span class="row__name" data-i18n="skills.excel">Microsoft Excel</span>
+                <span class="chip" data-i18n="skills.excelLvl">Experienced</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="skills.g3">Languages</h3>
+            <ul class="rows">
+              <li class="row">
+                <span class="row__name" data-i18n="skills.en">English</span>
+                <span class="chip" data-i18n="skills.enLvl">Proficient</span>
+              </li>
+              <li class="row">
+                <span class="row__name" data-i18n="skills.zh">Chinese</span>
+                <span class="chip" data-i18n="skills.zhLvl">Native</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 03 Education ============ -->
+      <section class="section reveal" id="education">
+        <div class="section__head">
+          <span class="section__num">03</span>
+          <h2 class="section__title" data-i18n="nav.education">Education</h2>
+        </div>
+        <p class="section__lead" data-i18n="education.lead">Academic results, school responsibilities, and competitions I have represented the school in.</p>
+
+        <div class="cards">
+          <div class="card">
+            <h3 class="card__title" data-i18n="education.school">The Hong Kong Chinese Christian Churches Union Logos Academy</h3>
+            <p class="card__meta">
+              <span data-i18n="education.schoolMeta">2024 – Present · Secondary 3 to Secondary 5</span>
+            </p>
+
+            <ul class="bullets">
+              <li data-i18n="education.b3">Stood in the school student union election for Internal Vice Chair; outcome pending.</li>
+              <li data-i18n="education.b1">Selected to represent the school at the 2026 International Mathematical Modelling Challenge (IMMC).</li>
+              <li class="bullets__row">
+                <span data-i18n="education.b2">Selected to represent the school at the 2027 International Mathematical Modelling Challenge (IMMC) and the 2027 PolyU Science Talents Competition.</span>
+                <span class="chip chip--soft" data-i18n="education.b2badge">Upcoming</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="education.entry1School">Evangel College</h3>
+            <p class="card__meta">
+              <span data-i18n="education.entry1Meta">2016 – 2024 · Primary 1 to Secondary 2</span>
+            </p>
+          </div>
+        </div>
+
+        <h3 class="subhead" data-i18n="education.academicTitle">Academic Performance</h3>
+        <ul class="rows rows--boxed">
+          <li class="row">
+            <span class="row__name" data-i18n="education.subj1">Physics</span>
+            <span class="row__meta" data-i18n="education.subj1meta">S4 · 1st in form</span>
+          </li>
+          <li class="row">
+            <span class="row__name" data-i18n="education.subj2">Additional Mathematics</span>
+            <span class="row__meta" data-i18n="education.subj2meta">S4 · 1st in form</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============ 04 Achievements ============ -->
+      <section class="section reveal" id="achievements">
+        <div class="section__head">
+          <span class="section__num">04</span>
+          <h2 class="section__title" data-i18n="nav.achievements">Achievements</h2>
+        </div>
+        <p class="section__lead" data-i18n="achievements.lead">Results from external competitions and long-term interests.</p>
+
+        <ol class="timeline">
+          <li class="timeline__item">
+            <p class="timeline__year" data-i18n="achievements.a2year">Feb 2025</p>
+            <h3 class="timeline__title" data-i18n="achievements.a2title">Go (Weiqi)</h3>
+            <p class="timeline__detail" data-i18n="achievements.a2detail">Reached a ranking of 5 dan, competing regularly since childhood.</p>
+            <p class="timeline__meta">
+              <span data-i18n="achievements.a2note">Competition names to be added.</span>
+              <span class="todo" data-i18n="todo.label">To fill in</span>
+            </p>
+          </li>
+          <li class="timeline__item">
+            <p class="timeline__year" data-i18n="achievements.a1year">2026</p>
+            <h3 class="timeline__title" data-i18n="achievements.a1title">Hong Kong Physics Olympiad</h3>
+            <p class="timeline__detail" data-i18n="achievements.a1detail">Third Honour</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ============ 05 Work Experience ============ -->
+      <section class="section reveal" id="work">
+        <div class="section__head">
+          <span class="section__num">05</span>
+          <h2 class="section__title" data-i18n="nav.work">Work Experience</h2>
+        </div>
+        <p class="section__lead" data-i18n="work.lead">Internship experience.</p>
+
+        <div class="card">
+          <h3 class="card__title" data-i18n="work.role">Intern</h3>
+          <p class="card__org" data-i18n="work.org">Sanfield</p>
+          <p class="card__meta">
+            <span data-i18n="work.meta">15–16 October 2026</span>
+          </p>
+          <p class="card__body" data-i18n="work.detail">Learned to build software using AI-assisted development (vibecoding) during an internship at Sanfield.</p>
+          <p class="card__note">
+            <span data-i18n="work.detail2">Details of what I built will be added here.</span>
+            <span class="todo" data-i18n="todo.label">To fill in</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- ============ 06 Project Experience ============ -->
+      <section class="section reveal" id="projects">
+        <div class="section__head">
+          <span class="section__num">06</span>
+          <h2 class="section__title" data-i18n="nav.projects">Project Experience</h2>
+        </div>
+        <p class="section__lead" data-i18n="projects.lead">Two International Baccalaureate projects, both still in progress.</p>
+
+        <div class="cards cards--2">
+          <div class="card">
+            <div class="card__head">
+              <h3 class="card__title" data-i18n="projects.p1title">IB CAS Project</h3>
+              <span class="status status--progress" data-i18n="projects.p1status">In progress</span>
+            </div>
+            <p class="card__body" data-i18n="projects.p1detail">Self-initiated a project to visit a local children's community centre to demonstrate and teach science experiments.</p>
+          </div>
+
+          <div class="card">
+            <div class="card__head">
+              <h3 class="card__title" data-i18n="projects.p2title">IB Extended Essay (EE)</h3>
+              <span class="status status--pending" data-i18n="projects.p2status">Not started</span>
+            </div>
+            <p class="card__body" data-i18n="projects.p2detail">Planned 4,000-word research paper in Physics.</p>
+            <p class="card__note">
+              <span data-i18n="projects.p2note">Research topic to be confirmed.</span>
+              <span class="todo" data-i18n="todo.label">To fill in</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 07 Hobbies ============ -->
+      <section class="section reveal" id="hobbies">
+        <div class="section__head">
+          <span class="section__num">07</span>
+          <h2 class="section__title" data-i18n="nav.hobbies">Hobbies</h2>
+        </div>
+        <p class="section__lead" data-i18n="hobbies.lead">Activities I have committed to over the long term.</p>
+
+        <div class="cards cards--2">
+          <div class="card">
+            <h3 class="card__title" data-i18n="hobbies.h1">Go (Weiqi)</h3>
+            <p class="card__body" data-i18n="hobbies.h1detail">Played for 12 years and won numerous competitions, reaching a rank of 5 dan.</p>
+            <p class="card__note">
+              <span data-i18n="hobbies.h1note">Competition names and years to be added.</span>
+              <span class="todo" data-i18n="todo.label">To fill in</span>
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="hobbies.h2">Table Tennis</h3>
+            <p class="card__body" data-i18n="hobbies.h2detail">Played for 2 years.</p>
+            <p class="card__note">
+              <span data-i18n="hobbies.h2note">School team or competition record to be added.</span>
+              <span class="todo" data-i18n="todo.label">To fill in</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__name" data-i18n="hero.nameAlt">Lee Cheuk Ki &middot; 李卓其</p>
+      <p class="footer__links">
+        <a href="mailto:maxcklee.hk@gmail.com">maxcklee.hk@gmail.com</a>
+        <span aria-hidden="true">·</span>
+        <a href="tel:+85256297028">56297028</a>
+      </p>
+      <p class="footer__note" data-i18n="footer.updated">Last updated October 2026</p>
+      <p class="footer__note" data-i18n="footer.builtWith">Built with HTML, CSS and JavaScript.</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

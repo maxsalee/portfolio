@@ -1,0 +1,865 @@
+/* ==========================================================================
+   Lee Cheuk Ki (Max Lee) — Personal CV
+   Single stylesheet. No frameworks, no webfonts, no external requests.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  /* Surfaces — a warm off-white reads as "paper", not "app" */
+  --bg:          #fbfaf7;
+  --surface:     #ffffff;
+
+  /* Text */
+  --ink:         #141c24;
+  --ink-soft:    #586472;
+  --ink-faint:   #67707c;
+
+  /* Lines */
+  --rule:        #e7e3db;
+  --rule-soft:   #f1eee8;
+  --rule-strong: #d8d2c7;
+
+  /* One accent colour */
+  --accent:      #1b5c8f;
+  --accent-deep: #144a72;
+  --accent-tint: #eef4f9;
+  --on-accent:   #ffffff;              /* text sitting on --accent */
+  --bg-translucent: rgba(251, 250, 247, 0.92);   /* sticky mobile bar */
+
+  /* Underlines behind inline links */
+  --link-line:   rgba(27, 92, 143, 0.3);
+
+  /* Status and placeholder colours */
+  --warm:        #9c5b23;
+  --warm-tint:   #fdf3e7;
+  --warm-border: rgba(156, 91, 35, 0.45);
+  --ok:          #1f6b40;
+  --ok-tint:     #eaf5ee;
+  --wait:        #7a6130;
+  --wait-tint:   #f6f2e7;
+
+  /* Layout */
+  --sidebar-w:   272px;
+  --content-w:   720px;
+
+  /* Typography — system stacks only, so the page works fully offline */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, "Noto Sans",
+               "Microsoft JhengHei", "PingFang TC", "Microsoft YaHei", "PingFang SC",
+               sans-serif;
+  --font-serif: Georgia, "Iowan Old Style", "Times New Roman",
+                "Songti SC", "SimSun", "Noto Serif",
+                serif;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   1b. Dark theme
+   Every pair below is checked by tools/check-contrast.js. The accent is
+   deliberately lightened, because the light-theme navy fails on a dark
+   background, and --on-accent flips to near-black.
+   -------------------------------------------------------------------------- */
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:          #101419;
+  --surface:     #181e25;
+
+  --ink:         #e9edf1;
+  --ink-soft:    #adb7c2;
+  --ink-faint:   #8e98a4;
+
+  --rule:        #2b333c;
+  --rule-soft:   #222932;
+  --rule-strong: #3b444e;
+
+  --accent:      #6cb0e2;
+  --accent-deep: #8cc5ee;
+  --accent-tint: #1b2836;
+  --on-accent:   #0c1218;
+  --bg-translucent: rgba(16, 20, 25, 0.92);
+
+  --link-line:   rgba(140, 197, 238, 0.35);
+
+  --warm:        #e3ab72;
+  --warm-tint:   #2c2318;
+  --warm-border: rgba(227, 171, 114, 0.45);
+  --ok:          #6fc79b;
+  --ok-tint:     #14261d;
+  --wait:        #dcc07e;
+  --wait-tint:   #2a2416;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;   /* clears the sticky mobile bar */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.25; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Skip link — visible only when focused */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 10px 18px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 0 0 var(--r-sm) 0;
+}
+.skip-link:focus { left: 0; }
+
+/* --------------------------------------------------------------------------
+   3. Layout shell
+   -------------------------------------------------------------------------- */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main { flex: 1; }
+
+.content {
+  max-width: var(--content-w);
+  margin-inline: auto;
+}
+
+/* --------------------------------------------------------------------------
+   4. Sidebar — sticky sidebar on desktop, collapsed top bar on mobile
+   -------------------------------------------------------------------------- */
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg-translucent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.sidebar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-decoration: none;
+}
+.brand__name {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.brand__alt {
+  display: none;                 /* shown from 1080px up; also in the hero */
+  margin-top: 1px;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Hamburger */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.nav-toggle:hover { border-color: var(--rule-strong); }
+
+.nav-toggle__bars,
+.nav-toggle__bars::before,
+.nav-toggle__bars::after {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.2s ease, top 0.2s ease, background-color 0.2s ease;
+}
+.nav-toggle__bars { position: relative; }
+.nav-toggle__bars::before,
+.nav-toggle__bars::after { content: ""; position: absolute; left: 0; }
+.nav-toggle__bars::before { top: -5px; }
+.nav-toggle__bars::after  { top: 5px; }
+
+.sidebar.is-open .nav-toggle__bars { background: transparent; }
+.sidebar.is-open .nav-toggle__bars::before { top: 0; transform: rotate(45deg); }
+.sidebar.is-open .nav-toggle__bars::after  { top: 0; transform: rotate(-45deg); }
+
+/* Collapsible panel (mobile) */
+.sidebar__panel {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding: 2px 20px 22px;
+}
+.sidebar.is-open .sidebar__panel { display: flex; }
+
+.sidebar__status {
+  font-size: 11.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Nav */
+.nav__list { display: flex; flex-direction: column; gap: 1px; }
+
+.nav__link {
+  display: block;
+  padding: 7px 12px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+.nav__link:hover {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+}
+.nav__link[aria-current="true"] {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Language switcher */
+.lang {
+  display: inline-flex;
+  gap: 2px;
+  align-self: flex-start;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+.lang__btn {
+  padding: 5px 12px;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.lang__btn:hover { background: var(--accent-tint); color: var(--accent-deep); }
+.lang__btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   4b. Controls — language, theme toggle, PDF export
+   -------------------------------------------------------------------------- */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.controls__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 13px;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+.icon-btn:hover {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border-color: var(--accent);
+}
+.icon-btn:active { transform: translateY(0.5px); }
+.icon-btn svg { flex: 0 0 auto; }
+
+.theme-toggle { width: 34px; padding: 0; }
+
+/* Show the icon of the mode the button will switch *to* */
+.theme-toggle__icon--sun { display: none; }
+html[data-theme="dark"] .theme-toggle__icon--sun  { display: block; }
+html[data-theme="dark"] .theme-toggle__icon--moon { display: none; }
+
+/* --------------------------------------------------------------------------
+   5. Content column, sections, hero
+   -------------------------------------------------------------------------- */
+main { padding: 44px 20px 0; }
+.footer { padding: 44px 20px 60px; }
+
+.section { padding-bottom: 64px; }
+.section + .section {
+  padding-top: 56px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+.section__num {
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.section__title {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 3.2vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.section__lead {
+  max-width: 58ch;
+  margin-bottom: 28px;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+}
+
+/* Hero = section 01 */
+.hero { padding-bottom: 64px; }
+.hero__eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.hero__name {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 7vw, 58px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.hero__alt {
+  margin-top: 10px;
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.hero__lead {
+  max-width: 32ch;
+  margin-top: 28px;
+  font-family: var(--font-serif);
+  font-size: clamp(19px, 2.6vw, 23px);
+  line-height: 1.5;
+}
+.hero__intro {
+  max-width: 60ch;
+  margin-top: 16px;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+}
+
+/* Contact details */
+.info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px 24px;
+  margin-top: 34px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+}
+.info dt {
+  margin-bottom: 4px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.info dd { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.info a {
+  color: var(--accent-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-line);
+  transition: border-color 0.15s ease;
+}
+.info a:hover { border-bottom-color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   6. Components — cards, rows, bullets, timeline, chips
+   -------------------------------------------------------------------------- */
+.cards { display: grid; gap: 16px; }
+
+.card {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+}
+.card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.card__title {
+  font-size: 16.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.card__org {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-deep);
+}
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+.card__body {
+  margin-top: 10px;
+  font-size: 14.8px;
+  color: var(--ink-soft);
+}
+.card__note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--ink-faint);
+}
+
+.subhead {
+  margin: 32px 0 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Key/value rows (skills, academic results) */
+.rows { display: flex; flex-direction: column; }
+.rows--boxed {
+  padding: 4px 22px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.row:last-child { border-bottom: 0; }
+.row__name { font-size: 15px; }
+.row__meta {
+  font-size: 13px;
+  color: var(--accent-deep);
+  white-space: nowrap;
+}
+.card .row { border-bottom-color: var(--rule-soft); }
+.card .rows { margin-top: 12px; }
+
+/* Bulleted lists */
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 15px;
+}
+.bullets li {
+  position: relative;
+  padding-left: 19px;
+  font-size: 14.8px;
+  color: var(--ink-soft);
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.7em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+}
+.bullets__row {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+/* Timeline (achievements) */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-left: 26px;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 9px;
+  bottom: 9px;
+  width: 1px;
+  background: var(--rule);
+}
+.timeline__item { position: relative; }
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: -25px;
+  top: 6px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  background: var(--bg);
+}
+.timeline__year {
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.timeline__title { margin-top: 3px; font-size: 16px; font-weight: 600; }
+.timeline__detail { margin-top: 4px; font-size: 14.8px; color: var(--ink-soft); }
+.timeline__meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+/* Small labels */
+.chip {
+  display: inline-block;
+  padding: 2px 9px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border-radius: 999px;
+}
+.chip--soft { color: var(--ink-soft); background: var(--rule-soft); }
+
+.status {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  border-radius: 999px;
+}
+.status--progress { color: var(--ok);   background: var(--ok-tint); }
+.status--pending  { color: var(--wait); background: var(--wait-tint); }
+
+.todo {
+  display: inline-block;
+  padding: 1.5px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--warm);
+  background: var(--warm-tint);
+  border: 1px dashed var(--warm-border);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Footer
+   -------------------------------------------------------------------------- */
+.footer {
+  margin-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: var(--content-w);
+  margin-inline: auto;
+}
+.footer__name {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+}
+.footer__links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--accent-deep);
+}
+.footer__links a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-line);
+}
+.footer__links a:hover { border-bottom-color: var(--accent); }
+.footer__note { font-size: 12.5px; color: var(--ink-faint); }
+
+/* --------------------------------------------------------------------------
+   8. Scroll reveal (only when JavaScript is running)
+   -------------------------------------------------------------------------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.7, 0.3, 1),
+              transform 0.6s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* --------------------------------------------------------------------------
+   9. Chinese typesetting
+   -------------------------------------------------------------------------- */
+html[lang^="zh"] body { line-height: 1.8; }
+html[lang^="zh"] .hero__name,
+html[lang^="zh"] .section__title,
+html[lang^="zh"] .hero__lead { letter-spacing: 0; }
+html[lang^="zh"] .hero__name { line-height: 1.2; }
+html[lang^="zh"] .hero__alt { letter-spacing: 0.04em; }
+html[lang^="zh"] .hero__lead { max-width: 24ch; }
+html[lang^="zh"] .hero__eyebrow,
+html[lang^="zh"] .section__num,
+html[lang^="zh"] .sidebar__status,
+html[lang^="zh"] .subhead,
+html[lang^="zh"] .info dt { letter-spacing: 0.05em; }
+html[lang^="zh"] .card__body,
+html[lang^="zh"] .row__name,
+html[lang^="zh"] .bullets li,
+html[lang^="zh"] .timeline__detail { line-height: 1.75; }
+
+/* --------------------------------------------------------------------------
+   10. Wide screens — real sticky sidebar
+   -------------------------------------------------------------------------- */
+@media (min-width: 1080px) {
+  html { scroll-padding-top: 28px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .sidebar {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom: 0;
+    border-right: 1px solid var(--rule);
+  }
+  .sidebar__head { padding: 46px 30px 0; }
+  .brand__alt { display: block; }
+  .sidebar__panel {
+    display: flex;
+    flex: 1;
+    gap: 22px;
+    padding: 26px 30px 40px;
+    overflow-y: auto;
+  }
+  .nav-toggle { display: none; }
+
+  main { grid-column: 2; grid-row: 1; padding: 80px 64px 0; }
+  .footer { grid-column: 2; grid-row: 2; padding: 60px 64px 80px; }
+
+  .cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 720px) and (max-width: 1079px) {
+  .cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* --------------------------------------------------------------------------
+   11. Print — Ctrl+P gives a clean, usable PDF CV
+   -------------------------------------------------------------------------- */
+@page { margin: 14mm; }
+
+@media print {
+  /* Always print on the light palette, even if dark mode is active. */
+  :root,
+  html[data-theme="dark"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --ink: #000000;
+    --ink-soft: #333333;
+    --ink-faint: #555555;
+    --rule: #cccccc;
+    --rule-soft: #e5e5e5;
+    --rule-strong: #bbbbbb;
+    --accent: #1b5c8f;
+    --accent-deep: #144a72;
+    --accent-tint: #eef4f9;
+    --on-accent: #ffffff;
+    --bg-translucent: #ffffff;
+    --link-line: #999999;
+    --warm: #8a4f1d;
+    --warm-tint: #fdf3e7;
+    --warm-border: #c9a173;
+    --ok: #1f6b40;
+    --ok-tint: #eaf5ee;
+    --wait: #6f5828;
+    --wait-tint: #f6f2e7;
+  }
+
+  .sidebar,
+  .nav-toggle,
+  .controls,
+  .skip-link { display: none !important; }
+
+  .layout { display: block !important; }
+
+  body {
+    background: #fff;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  main { padding: 0 !important; }
+  .content { max-width: none; }
+  .footer {
+    margin-top: 24px;
+    padding: 16px 0 0 !important;
+    border-top: 1px solid #ccc;
+  }
+  .footer__inner { max-width: none; }
+
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+
+  .section { padding-bottom: 20px !important; break-inside: avoid; }
+  .section__head { break-after: avoid; }
+  .section + .section { padding-top: 20px !important; border-top: 1px solid #ddd; }
+  .hero { padding-bottom: 20px !important; }
+  .hero__name { font-size: 24pt; }
+  .hero__lead { font-size: 12pt; }
+
+  .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border-color: #ccc;
+  }
+  .timeline__item { break-inside: avoid; }
+
+  a { text-decoration: none; color: #000; }
+  .info a { border-bottom: 0; color: #000; }
+  .card__org,
+  .row__meta,
+  .footer__links { color: #000; }
+}
