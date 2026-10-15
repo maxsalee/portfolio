@@ -85,8 +85,13 @@ function pairsFor(C) {
     ["todo badge",                  C.warm,      C.warmTint,   4.5],
     ["active language button",      C.onAccent,  C.accent,     4.5],
     ["theme + pdf button label",    C.inkSoft,   C.surface,    4.5],
+    ["text-size button label",      C.inkSoft,   C.surface,    4.5],
+    ["greeting text on tint",       C.ink,       C.accentTint, 4.5],
+    ["greeting button label",       C.accentDeep, C.surface,   4.5],
+    ["back-to-top glyph",           C.accentDeep, C.surface,   4.5],
     ["academic rank on card",       C.accentDeep, C.surface,   4.5],
     ["footer link on page",         C.accentDeep, C.bg,        4.5],
+    ["reading progress bar",        C.accent,    C.bg,         3.0],
     ["focus ring vs page",          C.accent,    C.bg,         3.0]
   ];
 }

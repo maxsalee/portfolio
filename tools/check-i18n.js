@@ -40,9 +40,14 @@ for (const code of langCodes) {
   }
 }
 
-// 3. unused dictionary keys (accounting for keys read directly from main.js)
+// 3. unused dictionary keys. main.js reads a few keys through variables
+//    (the greeting wording, the weather descriptions), so collect both
+//    translate(<x>, "key") calls and any dotted string literal.
 const mainJs = fs.readFileSync(path.join(root, "js", "main.js"), "utf8");
-const keysInJs = new Set([...mainJs.matchAll(/translate\([^,]+,\s*"([^"]+)"/g)].map((m) => m[1]));
+const keysInJs = new Set([
+  ...[...mainJs.matchAll(/translate\([^,]+,\s*"([^"]+)"/g)].map((m) => m[1]),
+  ...[...mainJs.matchAll(/"([a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z0-9.]+)"/g)].map((m) => m[1])
+]);
 const unused = [];
 for (const key of Object.keys(I18N.strings[I18N.defaultLang])) {
   if (!keysInHtml.has(key) && !keysInJs.has(key)) unused.push(key);

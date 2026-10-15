@@ -6,7 +6,10 @@
    How to add or edit text:
      1. Find the element in index.html. It carries data-i18n="some.key".
      2. Add/edit "some.key" in EVERY language below. A missing key simply
-        leaves the element's original HTML text in place.
+        falls back to the English string.
+
+   Keys with {placeholders} are filled in by js/main.js at runtime:
+     greet.weatherTpl  → {temp} {cond} {place}
    ========================================================================== */
 
 window.I18N = {
@@ -64,14 +67,12 @@ window.I18N = {
       "skills.g3": "Languages",
       "skills.en": "English",
       "skills.enLvl": "Proficient",
-      "skills.zh": "Chinese",
+      "skills.zh": "Cantonese",
       "skills.zhLvl": "Native",
 
       "education.lead": "Academic results, school responsibilities, and competitions I have represented the school in.",
       "education.school": "The Hong Kong Chinese Christian Churches Union Logos Academy",
       "education.schoolMeta": "2024 – Present · Secondary 3 to Secondary 5",
-      "education.entry1School": "Evangel College",
-      "education.entry1Meta": "2016 – 2024 · Primary 1 to Secondary 2",
       "education.b3": "Stood in the school student union election for Internal Vice Chair; outcome pending.",
       "education.b1": "Selected to represent the school at the 2026 International Mathematical Modelling Challenge (IMMC).",
       "education.b2": "Selected to represent the school at the 2027 International Mathematical Modelling Challenge (IMMC) and the 2027 PolyU Science Talents Competition.",
@@ -117,14 +118,38 @@ window.I18N = {
 
       "todo.label": "To fill in",
 
+      "greet.morning": "Good morning",
+      "greet.afternoon": "Good afternoon",
+      "greet.evening": "Good evening",
+      "greet.weatherTpl": "{temp}°C and {cond} in {place}",
+      "greet.useLocation": "Use my location",
+      "greet.useLocationHint": "Show the weather where you are",
+      "greet.place": "Hong Kong",
+
+      "weather.clear": "clear",
+      "weather.mainlyClear": "mostly clear",
+      "weather.partlyCloudy": "partly cloudy",
+      "weather.cloudy": "cloudy",
+      "weather.fog": "foggy",
+      "weather.drizzle": "drizzly",
+      "weather.rain": "rainy",
+      "weather.showers": "showery",
+      "weather.snow": "snowy",
+      "weather.thunder": "stormy",
+
       "ui.controls": "Display and export",
       "ui.theme": "Dark mode",
       "ui.themeHint": "Switch between light and dark colours",
       "ui.pdf": "Download PDF",
-      "ui.pdfHint": "Opens the print dialog — choose “Save as PDF”.",
+      "ui.pdfHint": "Download this CV as a PDF file",
+      "ui.textSize": "Text size",
+      "ui.sizeDown": "Smaller text",
+      "ui.sizeUp": "Larger text",
+      "ui.sizeReset": "Reset text size",
+      "ui.top": "Back to top",
 
-      "footer.updated": "Last updated October 2026",
-      "footer.builtWith": "Built with HTML, CSS and JavaScript."
+      "footer.contents": "Contents",
+      "footer.updated": "Last updated October 2026"
     },
 
     /* ================= Traditional Chinese ================= */
@@ -168,14 +193,12 @@ window.I18N = {
       "skills.g3": "語言",
       "skills.en": "英文",
       "skills.enLvl": "精通",
-      "skills.zh": "中文",
+      "skills.zh": "粵語",
       "skills.zhLvl": "母語",
 
       "education.lead": "學業成績、校內職務，以及代表學校參與的比賽。",
       "education.school": "香港華人基督教聯會真道書院",
       "education.schoolMeta": "2024 – 現在 · 中三至中五",
-      "education.entry1School": "播道書院",
-      "education.entry1Meta": "2016 – 2024 · 小一至中二",
       "education.b3": "參選校內學生會選舉，競逐內務副主席一職；結果待定。",
       "education.b1": "獲選代表學校參加 2026 年國際數學建模挑戰賽（IMMC）。",
       "education.b2": "獲選代表學校參加 2027 年國際數學建模挑戰賽（IMMC）及 2027 年香港理工大學科學人才比賽。",
@@ -221,14 +244,38 @@ window.I18N = {
 
       "todo.label": "待補充",
 
+      "greet.morning": "早晨",
+      "greet.afternoon": "午安",
+      "greet.evening": "晚上好",
+      "greet.weatherTpl": "{place}{cond}，{temp}°C",
+      "greet.useLocation": "使用我的位置",
+      "greet.useLocationHint": "顯示你所在地的天氣",
+      "greet.place": "香港",
+
+      "weather.clear": "天晴",
+      "weather.mainlyClear": "大致天晴",
+      "weather.partlyCloudy": "部分時間有陽光",
+      "weather.cloudy": "多雲",
+      "weather.fog": "有霧",
+      "weather.drizzle": "有微雨",
+      "weather.rain": "有雨",
+      "weather.showers": "有驟雨",
+      "weather.snow": "有雪",
+      "weather.thunder": "有雷暴",
+
       "ui.controls": "顯示與匯出",
       "ui.theme": "深色模式",
       "ui.themeHint": "切換淺色與深色配色",
       "ui.pdf": "下載 PDF",
-      "ui.pdfHint": "開啟列印對話框，請選擇「另存為 PDF」。",
+      "ui.pdfHint": "下載這份履歷的 PDF 檔案",
+      "ui.textSize": "文字大小",
+      "ui.sizeDown": "縮小文字",
+      "ui.sizeUp": "放大文字",
+      "ui.sizeReset": "回復預設文字大小",
+      "ui.top": "回到頂部",
 
-      "footer.updated": "最後更新：2026 年 10 月",
-      "footer.builtWith": "以 HTML、CSS 及 JavaScript 製作。"
+      "footer.contents": "目錄",
+      "footer.updated": "最後更新：2026 年 10 月"
     },
 
     /* ================== Simplified Chinese ================== */
@@ -272,14 +319,12 @@ window.I18N = {
       "skills.g3": "语言",
       "skills.en": "英文",
       "skills.enLvl": "精通",
-      "skills.zh": "中文",
+      "skills.zh": "粤语",
       "skills.zhLvl": "母语",
 
       "education.lead": "学业成绩、校内职务，以及代表学校参与的比赛。",
       "education.school": "香港华人基督教联会真道书院",
       "education.schoolMeta": "2024 – 现在 · 中三至中五",
-      "education.entry1School": "播道书院",
-      "education.entry1Meta": "2016 – 2024 · 小一至中二",
       "education.b3": "参选校内学生会选举，竞逐内务副主席一职；结果待定。",
       "education.b1": "获选代表学校参加 2026 年国际数学建模挑战赛（IMMC）。",
       "education.b2": "获选代表学校参加 2027 年国际数学建模挑战赛（IMMC）及 2027 年香港理工大学科学人才比赛。",
@@ -325,14 +370,38 @@ window.I18N = {
 
       "todo.label": "待补充",
 
+      "greet.morning": "早上好",
+      "greet.afternoon": "下午好",
+      "greet.evening": "晚上好",
+      "greet.weatherTpl": "{place}{cond}，{temp}°C",
+      "greet.useLocation": "使用我的位置",
+      "greet.useLocationHint": "显示你所在地的天气",
+      "greet.place": "香港",
+
+      "weather.clear": "天晴",
+      "weather.mainlyClear": "大致天晴",
+      "weather.partlyCloudy": "部分时间有阳光",
+      "weather.cloudy": "多云",
+      "weather.fog": "有雾",
+      "weather.drizzle": "有微雨",
+      "weather.rain": "有雨",
+      "weather.showers": "有阵雨",
+      "weather.snow": "有雪",
+      "weather.thunder": "有雷暴",
+
       "ui.controls": "显示与导出",
       "ui.theme": "深色模式",
       "ui.themeHint": "切换浅色与深色配色",
       "ui.pdf": "下载 PDF",
-      "ui.pdfHint": "打开打印对话框，请选择“另存为 PDF”。",
+      "ui.pdfHint": "下载这份简历的 PDF 文件",
+      "ui.textSize": "文字大小",
+      "ui.sizeDown": "缩小文字",
+      "ui.sizeUp": "放大文字",
+      "ui.sizeReset": "恢复默认文字大小",
+      "ui.top": "回到顶部",
 
-      "footer.updated": "最后更新：2026 年 10 月",
-      "footer.builtWith": "以 HTML、CSS 及 JavaScript 制作。"
+      "footer.contents": "目录",
+      "footer.updated": "最后更新：2026 年 10 月"
     }
   }
 };
