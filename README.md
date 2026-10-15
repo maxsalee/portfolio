@@ -15,6 +15,20 @@ A single-page CV site built with plain HTML, CSS and JavaScript.
 
 ## Quick start
 
+### Option A — One-click launchers (recommended for downloaded ZIP)
+
+| Platform | File | How to use |
+|---|---|---|
+| Windows | `start.bat` | **Double-click** — starts server + opens browser |
+| macOS / Linux | `start.command` | **Double-click** (or `./start.command` in Terminal) — starts server + opens browser |
+
+These scripts run `node server.js` and open <http://127.0.0.1:4173> automatically.  
+**Requires Node.js** (download from [nodejs.org](https://nodejs.org/)).
+
+---
+
+### Option B — Manual
+
 ```powershell
 node server.js
 ```
@@ -27,13 +41,8 @@ To stop the server, press `Ctrl+C`. To use a different port:
 $env:PORT=4180; node server.js
 ```
 
-You can also just double-click `index.html` to open it directly in a browser —
-there is nothing to compile and no server-only feature. The page renders and
-behaves the same from `file://`, including the live weather. The only things worth
-knowing are that a few browsers restrict `localStorage` on `file://` pages (where
-that happens, a language, theme or text-size choice is simply not remembered, and
-the page falls back to English and your system theme), and that geolocation needs a
-secure context, so on `file://` the weather stays on Hong Kong.
+> **Why not just double-click `index.html`?**  
+> Browsers block local files (`file://`) from loading CSS/JS for security. The site **will not look right** if opened directly — styles and scripts won't load. Use the launcher above or any static server (Python `http.server`, `npx serve`, etc.).
 
 ---
 
@@ -47,6 +56,8 @@ secure context, so on `file://` the weather stays on Hong Kong.
 | `js/main.js` | Language, theme, text size, greeting + weather, progress bar, back-to-top, scroll-spy, mobile menu, scroll reveal. |
 | `cv-en.pdf`, `cv-zh-Hant.pdf`, `cv-zh-Hans.pdf` | The downloadable CVs, one per language. Generated, not hand-written. |
 | `server.js` | Tiny dependency-free static server for local preview. |
+| `start.bat` | **Windows launcher** — double-click to start server + open browser. |
+| `start.command` | **macOS/Linux launcher** — double-click (or run in Terminal) to start server + open browser. |
 | `tools/build-pdf.js` | Rebuilds the three PDFs with headless Chrome or Edge. |
 | `tools/check-i18n.js` | Verifies every key used in the HTML exists in every language. |
 | `tools/check-contrast.js` | Checks all colour pairs against WCAG contrast thresholds, in both themes. |
