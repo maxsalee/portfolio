@@ -11,7 +11,7 @@ require(path.join(root, "js", "i18n.js"));
 const I18N = global.window.I18N;
 
 const keysInHtml = new Set();
-for (const attr of ["data-i18n", "data-i18n-content", "data-i18n-aria-label", "data-i18n-title"]) {
+for (const attr of ["data-i18n", "data-i18n-content", "data-i18n-aria-label", "data-i18n-title", "data-i18n-placeholder"]) {
   const re = new RegExp(attr + '="([^"]+)"', "g");
   let m;
   while ((m = re.exec(html))) keysInHtml.add(m[1]);
@@ -40,14 +40,19 @@ for (const code of langCodes) {
   }
 }
 
-// 3. unused dictionary keys. main.js reads a few keys through variables
-//    (the greeting wording, the weather descriptions), so collect both
-//    translate(<x>, "key") calls and any dotted string literal.
+// 3. unused dictionary keys. main.js and chat.js read a few keys through
+//    variables (the greeting wording, the weather descriptions, the chat
+//    bubbles), so collect both translate(<x>, "key") calls and any dotted
+//    string literal.
 const mainJs = fs.readFileSync(path.join(root, "js", "main.js"), "utf8");
-const keysInJs = new Set([
-  ...[...mainJs.matchAll(/translate\([^,]+,\s*"([^"]+)"/g)].map((m) => m[1]),
-  ...[...mainJs.matchAll(/"([a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z0-9.]+)"/g)].map((m) => m[1])
-]);
+const chatJs = fs.readFileSync(path.join(root, "js", "chat.js"), "utf8");
+const keysInJs = new Set(
+  [mainJs, chatJs].flatMap((code) => [
+    ...code.matchAll(/translate\([^,]+,\s*"([^"]+)"/g).map((m) => m[1]),
+    ...code.matchAll(/t\("([^"]+)"/g).map((m) => m[1]),
+    ...code.matchAll(/"([a-zA-Z][a-zA-Z0-9]*\.[a-zA-Z0-9.]+)"/g).map((m) => m[1])
+  ])
+);
 const unused = [];
 for (const key of Object.keys(I18N.strings[I18N.defaultLang])) {
   if (!keysInHtml.has(key) && !keysInJs.has(key)) unused.push(key);
