@@ -221,7 +221,7 @@ The **Download PDF** button is a plain link to a real PDF file:
 pressing it always saves the CV in the language you are reading. Even with
 JavaScript disabled, the link still works and serves the English PDF.
 
-Each PDF is **3 A4 pages** with real, selectable, searchable text and embedded
+Each PDF is **4 A4 pages** with real, selectable, searchable text and embedded
 fonts (including the Chinese glyphs) — not an image, and not a screenshot of the
 page. `Ctrl+P` still works as before if you prefer the print dialog.
 
@@ -250,15 +250,22 @@ $env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"; node t
 The print stylesheet:
 
 - forces the light palette, so dark-mode visitors still get black-on-white paper
-- sets A4 and 14mm margins (`@page { size: A4 }`)
+- sets A4 with 12mm top/bottom and 14mm left/right margins
+  (`@page { size: A4; margin: 12mm 14mm }`)
 - hides the sidebar, controls, greeting, progress bar, back-to-top button, skip
   link and footer contents list
 - makes cards and boxed lists single-column so they line up down the page
-- keeps cards, list rows and timeline entries from splitting across pages, while
-  letting the long sections flow, which avoids the large gaps that
-  `break-inside: avoid` on whole sections used to cause
+- keeps each topic whole: sections are plain blocks with `break-inside: avoid`,
+  so a heading and its contents never split across pages, and consecutive topics
+  get a rule and a margin between them so there is clear space to read
 - tightens Chinese leading on paper, where the generous on-screen spacing is not
   needed
+
+> Earlier attempts used `display: inline-block` on the sections and `font-size: 0`
+> on their container to build the on-screen columns, which made Chromium ignore
+> `break-inside: avoid` and split topics across pages. Those tricks were removed;
+> the columns are now a plain CSS grid on screen only, and print uses normal
+> block flow.
 
 ---
 
