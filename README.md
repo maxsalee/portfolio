@@ -9,6 +9,10 @@ A single-page CV site built with plain HTML, CSS and JavaScript.
 - **Downloads a real PDF** — a genuine, selectable-text PDF file, one per language
 - **Reads well on screen** — time-of-day greeting with live local weather, a
   reading-progress bar, a back-to-top button and a footer contents list
+- **Shareable** — a Share button next to Download PDF gives a copyable link
+  and QR code to the published site
+- **AI CV assistant** — a lightweight chatbot at the bottom-left answers
+  questions about the CV and refuses inappropriate requests
 - **Accessible** — Lighthouse 100 / 100 / 100 (accessibility, best practices, SEO)
 
 ---
@@ -59,9 +63,11 @@ $env:PORT=4180; node server.js
 | `start.bat` | **Windows launcher** — double-click to start server + open browser. |
 | `start.command` | **macOS/Linux launcher** — double-click (or run in Terminal) to start server + open browser. |
 | `tools/build-pdf.js` | Rebuilds the three PDFs with headless Chrome or Edge. |
-| `tools/check-i18n.js` | Verifies every key used in the HTML exists in every language. |
-| `tools/check-contrast.js` | Checks all colour pairs against WCAG contrast thresholds, in both themes. |
-| `CV website draft.txt` | Your original notes, kept untouched for reference. |
+| `js/share.js` | Share dialog (link + QR code), wired to the "Share" button next to the download link. |
+| `chat-core.js` | Shared chatbot logic: system prompt (no contact details), sanitisation, rate limiting, reply scrubbing and OpenRouter call. Used by both server.js and the Netlify Function. |
+| `netlify/functions/chat.js` | Netlify serverless function that proxies chat requests to OpenRouter so the bot works on the deployed static site. |
+| `netlify.toml` | Build config: runs `node tools/build-site.js` to publish `dist/`, and redirects `/api/chat` to the Netlify Function. |
+| `tools/build-site.js` | Build step that copies only the public site files to `dist/`, excluding notes and server-side code before publishing. |
 
 The seven sections are, in order: **Introduction, Skills, Education,
 Achievements, Work Experience, Project Experience, Hobbies.**
@@ -187,10 +193,17 @@ current weather. It is hidden when printing.
   temperature is validated as a number before use.
 - If the request fails or is offline, the greeting simply appears on its own.
 
-**This is the site's only external request.** It sends the coordinates (Hong Kong
-by default) to `api.open-meteo.com`. If you would rather have no network traffic at
-all, delete the `loadWeather(...)` call in `initGreeting()` and the greeting will
-keep working with just the time of day.
+The greeting + weather uses [Open-Meteo](https://open-meteo.com/) (no key). It
+sends coordinates (Hong Kong by default) to `api.open-meteo.com` only if the
+visitor chooses to share their location or the default fetch succeeds. The AI
+assistant talks to OpenRouter via `/api/chat` (proxy running in server.js or the
+Netlify Function) and is only enabled if an OpenRouter key is set.
+
+The chat needs an OpenRouter key. Create `.env` from `.env.example` (supports
+either `OPENROUTER_API_KEY` or `OPENROUTER_KEY`). For Netlify, set the key in
+Site configuration → Environment variables; `netlify.toml` + `tools/build-site.js`
+publish `dist/` and redirect `/api/chat` to the serverless function. The bot
+refuses inappropriate questions and never reveals private contact details.
 
 ---
 
@@ -221,9 +234,11 @@ The **Download PDF** button is a plain link to a real PDF file:
 pressing it always saves the CV in the language you are reading. Even with
 JavaScript disabled, the link still works and serves the English PDF.
 
-Each PDF is **3 A4 pages** with real, selectable, searchable text and embedded
+Each PDF is **4 A4 pages** with real, selectable, searchable text and embedded
 fonts (including the Chinese glyphs) — not an image, and not a screenshot of the
-page. `Ctrl+P` still works as before if you prefer the print dialog.
+page. The downloadable PDFs no longer include phone/email details, matching the
+site's public version. `Ctrl+P` still works as before if you prefer the print
+dialog.
 
 ### Rebuilding them
 
@@ -250,15 +265,22 @@ $env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"; node t
 The print stylesheet:
 
 - forces the light palette, so dark-mode visitors still get black-on-white paper
-- sets A4 and 14mm margins (`@page { size: A4 }`)
+- sets A4 with 12mm top/bottom and 14mm left/right margins
+  (`@page { size: A4; margin: 12mm 14mm }`)
 - hides the sidebar, controls, greeting, progress bar, back-to-top button, skip
   link and footer contents list
 - makes cards and boxed lists single-column so they line up down the page
-- keeps cards, list rows and timeline entries from splitting across pages, while
-  letting the long sections flow, which avoids the large gaps that
-  `break-inside: avoid` on whole sections used to cause
+- keeps each topic whole: sections are plain blocks with `break-inside: avoid`,
+  so a heading and its contents never split across pages, and consecutive topics
+  get a rule and a margin between them so there is clear space to read
 - tightens Chinese leading on paper, where the generous on-screen spacing is not
   needed
+
+> Earlier attempts used `display: inline-block` on the sections and `font-size: 0`
+> on their container to build the on-screen columns, which made Chromium ignore
+> `break-inside: avoid` and split topics across pages. Those tricks were removed;
+> the columns are now a plain CSS grid on screen only, and print uses normal
+> block flow.
 
 ---
 

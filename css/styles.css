@@ -412,6 +412,16 @@ main { padding: 44px 20px 0; }
   border-top: 1px solid var(--rule-soft);
 }
 
+/* Blog-style topic column. Sections read top to bottom on narrow screens and
+   pair up side by side on wide ones (see §10), so the two columns keep a
+   natural left-to-right, 02 | 03, 04 | 05 … order. */
+.topics { position: relative; }
+.topics > .section {
+  padding-top: 52px;
+  padding-bottom: 76px;
+  border-top: 1px solid var(--rule-soft);
+}
+
 .section__head {
   display: flex;
   align-items: baseline;
@@ -857,6 +867,366 @@ main { padding: 44px 20px 0; }
 .greeting__btn:hover { border-color: var(--accent); }
 .greeting__btn[hidden] { display: none; }
 
+/* Screen-reader-only text (the chatbot's input label). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7c. Chatbot ("Ask about my CV")
+   Floats bottom-left, clear of the sidebar on wide screens. The panel
+   keeps a fixed height so long answers scroll inside it, never the page.
+   -------------------------------------------------------------------------- */
+.chat__fab,
+.chat__panel {
+  --chat-edge: clamp(12px, 2.2vw, 26px);
+  --chat-fab:  clamp(44px, 4.8vw, 56px);
+  /* Distance from the left edge. On wide screens the sidebar occupies the
+     left column, so the widget shifts right of it (see §10). */
+  --chat-left: var(--chat-edge);
+}
+
+.chat[hidden],
+.chat__panel[hidden],
+.chat__status[hidden] { display: none !important; }
+
+/* The round launcher button. */
+.chat__fab {
+  position: fixed;
+  left: var(--chat-left);
+  bottom: var(--chat-edge);
+  z-index: 56;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--chat-fab);
+  height: var(--chat-fab);
+  padding: 0;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(20, 28, 36, 0.2);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.chat__fab:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.chat__fab:active { transform: translateY(0.5px); }
+
+.chat__fab-icon--close { display: none; }
+.chat.is-open .chat__fab-icon--open { display: none; }
+.chat.is-open .chat__fab-icon--close { display: block; }
+
+/* The panel itself. */
+.chat__panel {
+  position: fixed;
+  left: var(--chat-left);
+  bottom: calc(var(--chat-edge) + var(--chat-fab) + 20px);
+  z-index: 57;
+  display: flex;
+  flex-direction: column;
+  width: min(370px, calc(100vw - 2 * var(--chat-edge)));
+  height: min(60vh, 460px);
+  min-height: 300px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-md);
+  box-shadow: 0 18px 44px rgba(20, 28, 36, 0.24);
+}
+
+.chat__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 12px 11px 16px;
+  background: var(--accent-tint);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.chat__title {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: calc(15px * var(--fs));
+  font-weight: 600;
+  color: var(--accent-deep);
+}
+.chat__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.chat__close:hover { color: var(--ink); background: var(--rule-soft); }
+
+.chat__log {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.chat__msg {
+  max-width: 88%;
+  padding: 8px 12px;
+  font-size: calc(14.2px * var(--fs));
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: var(--r-md);
+}
+.chat__msg--bot {
+  align-self: flex-start;
+  color: var(--ink);
+  background: var(--accent-tint);
+  border: 1px solid var(--rule-soft);
+  border-bottom-left-radius: var(--r-sm);
+}
+.chat__msg--user {
+  align-self: flex-end;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-bottom-right-radius: var(--r-sm);
+}
+.chat__msg--error {
+  align-self: flex-start;
+  color: var(--warm);
+  background: var(--warm-tint);
+  border: 1px solid var(--warm-border);
+}
+
+/* Typing indicator. */
+.chat__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 8px;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--ink-faint);
+}
+.chat__dots { display: inline-flex; gap: 3px; }
+.chat__dots i {
+  width: 5px;
+  height: 5px;
+  background: var(--ink-faint);
+  border-radius: 999px;
+  animation: chat-dot 1.1s ease-in-out infinite;
+}
+.chat__dots i:nth-child(2) { animation-delay: 0.15s; }
+.chat__dots i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes chat-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30%           { opacity: 1;   transform: translateY(-3px); }
+}
+
+.chat__form {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--rule-soft);
+}
+.chat__input {
+  flex: 1;
+  min-height: 38px;
+  max-height: 96px;
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: calc(14px * var(--fs));
+  line-height: 1.4;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  resize: none;
+  overflow-y: auto;
+}
+.chat__input::placeholder { color: var(--ink-faint); }
+.chat__input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.chat__input:disabled { opacity: 0.6; }
+
+.chat__send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.chat__send:hover:not(:disabled) { background: var(--accent-deep); border-color: var(--accent-deep); }
+.chat__send:disabled { opacity: 0.5; cursor: default; }
+
+.chat__note {
+  padding: 0 16px 10px;
+  font-size: calc(11.5px * var(--fs));
+  color: var(--ink-faint);
+}
+
+/* On a phone the panel takes most of the screen; on a short viewport it
+   is capped so the launcher button is never pushed off-screen. */
+@media (max-width: 719px) {
+  .chat__panel { height: min(72vh, 520px); min-height: 0; }
+}
+.chat__panel { max-height: calc(100vh - var(--chat-edge) - var(--chat-fab) - 40px); }
+
+/* --------------------------------------------------------------------------
+   7d. Share dialog
+   A small centred modal with two ways to pass the CV on: a copyable link
+   and a QR code. Opened from the Share button beside Download PDF.
+   -------------------------------------------------------------------------- */
+.share[hidden] { display: none !important; }
+
+.share {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.share__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 22, 28, 0.42);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.share__panel {
+  position: relative;
+  width: min(400px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 18px 18px 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-md);
+  box-shadow: 0 24px 60px rgba(20, 28, 36, 0.3);
+}
+
+.share__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.share__title {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: calc(18px * var(--fs));
+  font-weight: 600;
+}
+.share__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+.share__close:hover { color: var(--ink); background: var(--rule-soft); }
+
+.share__body {
+  display: grid;
+  gap: 16px;
+}
+.share__option { display: grid; gap: 8px; }
+.share__label {
+  margin: 0;
+  font-size: calc(11.5px * var(--fs));
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.share__field { display: flex; gap: 8px; }
+.share__input {
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: calc(13.5px * var(--fs));
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+}
+.share__input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.share__copy {
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: calc(13px * var(--fs));
+  font-weight: 600;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.share__copy:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+/* The QR sits on white (it already has a white background) with a quiet
+   zone around it, so it scans in either theme. */
+.share__qr {
+  display: block;
+  margin: 2px auto 0;
+  width: 176px;
+  height: 176px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+}
+
+.share__status {
+  min-height: 1.2em;
+  margin: 10px 0 0;
+  font-size: calc(12.5px * var(--fs));
+  color: var(--ok);
+}
+
 /* --------------------------------------------------------------------------
    8. Scroll reveal (only when JavaScript is running)
    -------------------------------------------------------------------------- */
@@ -933,10 +1303,40 @@ html[lang^="zh"] .timeline__detail { line-height: 1.75; }
   }
   .nav-toggle { display: none; }
 
-  main { grid-column: 2; grid-row: 1; padding: 80px 64px 0; }
-  .footer { grid-column: 2; grid-row: 2; padding: 60px 64px 80px; }
+  main { grid-column: 2; grid-row: 1; padding: 80px 56px 0; }
+  .footer { grid-column: 2; grid-row: 2; padding: 60px 56px 80px; }
 
   .cards--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* A wider canvas, so two columns of cards still have room to breathe. */
+  :root { --content-w: 1120px; }
+
+  /* Two columns, paired in reading order: 02|03, 04|05, 06|07. Grid auto-flow
+     places each consecutive pair on one row, so the DOM order is preserved. */
+  .topics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 56px;
+    align-items: start;
+  }
+  /* A hairline down the middle makes the two columns visually distinct. */
+  .topics::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 0.5px);
+    width: 1px;
+    background: var(--rule-soft);
+  }
+  /* A little more air between topics than the pairs strictly need, so each
+     category reads as its own block down the column. */
+  .topics > .section { padding-top: 42px; padding-bottom: 72px; }
+
+  /* The sidebar owns the left column, so the chatbot moves just past it
+     to sit at the bottom-left of the content area instead of over the nav. */
+  .chat__fab,
+  .chat__panel { --chat-left: calc(var(--sidebar-w) + var(--chat-edge)); }
 }
 
 @media (min-width: 720px) and (max-width: 1079px) {
@@ -982,6 +1382,8 @@ html[lang^="zh"] .timeline__detail { line-height: 1.75; }
   .skip-link,
   .progress,
   .to-top,
+  .chat,
+  .share,
   .greeting,
   .footer__contents { display: none !important; }
 
@@ -1012,32 +1414,36 @@ html[lang^="zh"] .timeline__detail { line-height: 1.75; }
 
   .js .reveal { opacity: 1 !important; transform: none !important; }
 
-  /* Sections flow across pages. Avoiding breaks inside every section left
-     big gaps and a needlessly long PDF, so only the small blocks are kept
-     whole and headings are stopped from being orphaned. */
-  .section { padding-bottom: 10px !important; break-inside: auto; }
-  .section__headwrap { break-inside: avoid; }
+  /* On paper the topics run down a single column. Each topic is kept whole so
+     a heading and everything under it always share a page, and a clear rule
+     plus generous spacing separates one topic from the next. */
+  .topics { display: block !important; }
+  .topics::before { display: none !important; }
 
-  /* Keep the first content block with its section heading */
-  .section__headwrap + .cards,
-  .section__headwrap + .timeline,
-  .section__headwrap + .card,
-  .section__headwrap + .rows--boxed { break-before: avoid; }
+  /* Each topic is atomic. It is important that these sections stay ordinary
+     blocks: an earlier attempt used display:inline-block to force atomicity,
+     but inline-block boxes are what made Chromium ignore break-inside:avoid,
+     split topics, and waste most of each page. As plain blocks the rule is
+     honoured and the CV packs into four tidy, full pages. */
+  .topics > .section {
+    display: block;
+    margin-top: 26px;
+    padding-top: 20px !important;
+    border-top: 1px solid #d9d9d9;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 
-  .section + .section { padding-top: 12px !important; border-top: 1px solid #ddd; }
-  .hero { padding-bottom: 12px !important; }
+  .section {
+    padding-bottom: 0 !important;
+    break-inside: avoid;
+  }
+  .hero {
+    padding-bottom: 20px !important;
+    break-inside: avoid;
+  }
   .hero__name { font-size: 24pt; }
   .hero__lead { font-size: 12pt; }
-
-  .card,
-  .timeline__item,
-  .rows--boxed,
-  .row { break-inside: avoid; }
-  .section__head,
-  .subhead,
-  .card__head,
-  .card__title,
-  .timeline__title { break-after: avoid; }
 
   .card {
     box-shadow: none;

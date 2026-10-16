@@ -126,6 +126,17 @@
             </svg>
             <span data-i18n="ui.pdf">Download PDF</span>
           </a>
+
+          <button type="button" class="icon-btn share-btn" id="share-btn" aria-expanded="false"
+                  aria-controls="share-panel" aria-haspopup="dialog"
+                  data-i18n-aria-label="ui.shareHint" data-i18n-title="ui.shareHint">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <path d="M8.6 13.4l6.8 4.2"/><path d="M15.4 6.4l-6.8 4.2"/>
+            </svg>
+            <span data-i18n="ui.share">Share</span>
+          </button>
         </div>
 
       </div>
@@ -155,14 +166,6 @@
 
         <dl class="info" data-i18n-aria-label="a11y.contact">
           <div class="info__item">
-            <dt data-i18n="info.phone">Phone</dt>
-            <dd><a href="tel:+85256297028">56297028</a></dd>
-          </div>
-          <div class="info__item">
-            <dt data-i18n="info.email">Email</dt>
-            <dd><a href="mailto:maxcklee.hk@gmail.com">maxcklee.hk@gmail.com</a></dd>
-          </div>
-          <div class="info__item">
             <dt data-i18n="info.location">Location</dt>
             <dd data-i18n="info.locationVal">Hong Kong</dd>
           </div>
@@ -172,6 +175,12 @@
           </div>
         </dl>
       </header>
+
+      <!-- ============ Topics ============
+           Sections 02 – 07 sit in a two-column blog-style grid on wide
+           screens (see §10 of the stylesheet). The DOM keeps the original
+           01 – 07 order, so the columns read left to right, top to bottom. -->
+      <div class="topics">
 
       <!-- ============ 02 Skills ============ -->
       <section class="section reveal" id="skills">
@@ -369,6 +378,8 @@
         </div></div>
       </section>
 
+      </div><!-- /.topics -->
+
     </div>
   </main>
 
@@ -388,11 +399,6 @@
       </nav>
 
       <p class="footer__name" data-i18n="hero.nameAlt">Lee Cheuk Ki &middot; 李卓其</p>
-      <p class="footer__links">
-        <a href="mailto:maxcklee.hk@gmail.com">maxcklee.hk@gmail.com</a>
-        <span aria-hidden="true">·</span>
-        <a href="tel:+85256297028">56297028</a>
-      </p>
       <p class="footer__note" data-i18n="footer.updated">Last updated October 2026</p>
     </div>
   </footer>
@@ -405,7 +411,101 @@
   </svg>
 </button>
 
+<!-- ============ CV chatbot ============
+     The panel is inert until js/chat.js runs; the button does nothing
+     without JavaScript, so there is a graceful no-JS fallback. -->
+<div class="chat" id="chat" hidden>
+  <div class="chat__panel" id="chat-panel" role="dialog" aria-modal="false"
+       data-i18n-aria-label="chat.title" hidden>
+    <div class="chat__head">
+      <p class="chat__title" data-i18n="chat.title">Ask about my CV</p>
+      <button type="button" class="chat__close" id="chat-close"
+              data-i18n-aria-label="chat.closeLabel" data-i18n-title="chat.closeLabel">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="chat__log" id="chat-log" role="log" aria-live="polite" aria-atomic="false"></div>
+
+    <p class="chat__status" id="chat-status" hidden>
+      <span class="chat__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span data-i18n="chat.thinking">Thinking…</span>
+    </p>
+
+    <form class="chat__form" id="chat-form">
+      <label class="visually-hidden" for="chat-input" data-i18n="chat.inputLabel">Your question</label>
+      <textarea class="chat__input" id="chat-input" rows="1" maxlength="1000"
+                data-i18n-aria-label="chat.inputLabel" data-i18n-placeholder="chat.placeholder"></textarea>
+      <button type="submit" class="chat__send" id="chat-send"
+              data-i18n-aria-label="chat.sendLabel" data-i18n-title="chat.sendLabel">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h15"/><path d="M13 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </form>
+
+    <p class="chat__note" data-i18n="chat.disclaimer">AI-generated answers may be inaccurate.</p>
+  </div>
+
+  <button type="button" class="chat__fab" id="chat-fab" aria-expanded="false" aria-controls="chat-panel"
+          data-i18n-aria-label="chat.openLabel" data-i18n-title="chat.openLabel">
+    <svg class="chat__fab-icon chat__fab-icon--open" viewBox="0 0 24 24" width="22" height="22"
+         fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L4 21l1.4-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/>
+    </svg>
+    <svg class="chat__fab-icon chat__fab-icon--close" viewBox="0 0 24 24" width="20" height="20"
+         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
+</div>
+
+<!-- ============ Share dialog ============
+     Opened by the Share button next to Download PDF. The panel is inert
+     until js/share.js runs; without JavaScript the button does nothing. -->
+<div class="share" id="share" hidden>
+  <div class="share__backdrop" id="share-backdrop" aria-hidden="true"></div>
+  <div class="share__panel" id="share-panel" role="dialog" aria-modal="true" aria-labelledby="share-title">
+    <div class="share__head">
+      <h2 class="share__title" id="share-title" data-i18n="share.title">Share this CV</h2>
+      <button type="button" class="share__close" id="share-close"
+              data-i18n-aria-label="share.closeLabel" data-i18n-title="share.closeLabel">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="share__body">
+      <div class="share__option">
+        <p class="share__label" data-i18n="share.linkLabel">Link</p>
+        <div class="share__field">
+          <input class="share__input" id="share-link" type="text" readonly
+                 value="https://maxsalee-portfolio.netlify.app/"
+                 data-i18n-aria-label="share.linkLabel">
+          <button type="button" class="share__copy" id="share-copy" data-i18n="share.copy">Copy</button>
+        </div>
+      </div>
+
+      <div class="share__option">
+        <p class="share__label" data-i18n="share.qrLabel">QR code</p>
+        <img class="share__qr" id="share-qr" src="qr-code.svg" width="176" height="176"
+             alt="QR code for https://maxsalee-portfolio.netlify.app/" data-i18n-alt="share.qrAlt">
+      </div>
+    </div>
+
+    <p class="share__status" id="share-status" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
+<script src="js/share.js"></script>
+<script src="js/chat.js"></script>
 </body>
 </html>

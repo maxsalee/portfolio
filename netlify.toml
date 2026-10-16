@@ -1,0 +1,15 @@
+# Netlify configuration for the CV site.
+# Only the files a visitor may fetch are published (see tools/build-site.js);
+# the server code, tools and the private draft notes are never deployed.
+
+[build]
+  command = "node tools/build-site.js"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# The browser always calls /api/chat. Locally that is server.js; on Netlify it
+# is the serverless function below, so the same frontend works in both places.
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200

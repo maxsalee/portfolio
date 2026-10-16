@@ -151,6 +151,18 @@
       if (hint !== null) titleNodes[t].setAttribute("title", hint);
     }
 
+    var placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
+    for (var p = 0; p < placeholderNodes.length; p++) {
+      var placeholder = translate(code, placeholderNodes[p].getAttribute("data-i18n-placeholder"));
+      if (placeholder !== null) placeholderNodes[p].setAttribute("placeholder", placeholder);
+    }
+
+    var altNodes = document.querySelectorAll("[data-i18n-alt]");
+    for (var g = 0; g < altNodes.length; g++) {
+      var alt = translate(code, altNodes[g].getAttribute("data-i18n-alt"));
+      if (alt !== null) altNodes[g].setAttribute("alt", alt);
+    }
+
     var title = translate(code, "meta.title");
     if (title !== null) document.title = title;
 
