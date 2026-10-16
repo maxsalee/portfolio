@@ -151,6 +151,12 @@
       if (hint !== null) titleNodes[t].setAttribute("title", hint);
     }
 
+    var placeholderNodes = document.querySelectorAll("[data-i18n-placeholder]");
+    for (var p = 0; p < placeholderNodes.length; p++) {
+      var placeholder = translate(code, placeholderNodes[p].getAttribute("data-i18n-placeholder"));
+      if (placeholder !== null) placeholderNodes[p].setAttribute("placeholder", placeholder);
+    }
+
     var title = translate(code, "meta.title");
     if (title !== null) document.title = title;
 
