@@ -148,6 +148,17 @@ window.I18N = {
       "ui.sizeReset": "Reset text size",
       "ui.top": "Back to top",
 
+      "chat.title": "Ask about my CV",
+      "chat.openLabel": "Open the CV chatbot",
+      "chat.closeLabel": "Close the chatbot",
+      "chat.inputLabel": "Your question",
+      "chat.placeholder": "Ask about my skills, projects or experience…",
+      "chat.sendLabel": "Send message",
+      "chat.welcome": "Hi! I am Max's CV assistant. Ask me about his skills, education, projects, achievements, or how to get in touch.",
+      "chat.thinking": "Thinking…",
+      "chat.error": "Sorry, I could not answer just now. Please try again.",
+      "chat.disclaimer": "AI-generated answers may be inaccurate.",
+
       "footer.contents": "Contents",
       "footer.updated": "Last updated October 2026"
     },
@@ -274,6 +285,17 @@ window.I18N = {
       "ui.sizeReset": "回復預設文字大小",
       "ui.top": "回到頂部",
 
+      "chat.title": "關於我的履歷，歡迎提問",
+      "chat.openLabel": "開啟履歷聊天助理",
+      "chat.closeLabel": "關閉聊天助理",
+      "chat.inputLabel": "你的問題",
+      "chat.placeholder": "可問我的技能、專案或經歷……",
+      "chat.sendLabel": "傳送訊息",
+      "chat.welcome": "你好！我是李卓其履歷的 AI 助理。你可以問我有關他的技能、學歷、專案、成就，或聯絡方法。",
+      "chat.thinking": "正在思考……",
+      "chat.error": "抱歉，暫時未能回答，請再試一次。",
+      "chat.disclaimer": "回答由 AI 生成，未必完全準確。",
+
       "footer.contents": "目錄",
       "footer.updated": "最後更新：2026 年 10 月"
     },
@@ -399,6 +421,17 @@ window.I18N = {
       "ui.sizeUp": "放大文字",
       "ui.sizeReset": "恢复默认文字大小",
       "ui.top": "回到顶部",
+
+      "chat.title": "关于我的简历，欢迎提问",
+      "chat.openLabel": "打开简历聊天助理",
+      "chat.closeLabel": "关闭聊天助理",
+      "chat.inputLabel": "你的问题",
+      "chat.placeholder": "可以问我的技能、项目或经历……",
+      "chat.sendLabel": "发送消息",
+      "chat.welcome": "你好！我是李卓其简历的 AI 助理。你可以问我有关于他的技能、学历、项目、成就，或联系方式。",
+      "chat.thinking": "正在思考……",
+      "chat.error": "抱歉，暂时无法回答，请再试一次。",
+      "chat.disclaimer": "回答由 AI 生成，未必完全准确。",
 
       "footer.contents": "目录",
       "footer.updated": "最后更新：2026 年 10 月"
