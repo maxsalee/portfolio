@@ -173,6 +173,12 @@
         </dl>
       </header>
 
+      <!-- ============ Topics ============
+           Sections 02 – 07 sit in a two-column blog-style grid on wide
+           screens (see §10 of the stylesheet). The DOM keeps the original
+           01 – 07 order, so the columns read left to right, top to bottom. -->
+      <div class="topics">
+
       <!-- ============ 02 Skills ============ -->
       <section class="section reveal" id="skills">
         <div class="section__headwrap"><div class="section__head">
@@ -369,6 +375,8 @@
         </div></div>
       </section>
 
+      </div><!-- /.topics -->
+
     </div>
   </main>
 
@@ -405,7 +413,61 @@
   </svg>
 </button>
 
+<!-- ============ CV chatbot ============
+     The panel is inert until js/chat.js runs; the button does nothing
+     without JavaScript, so there is a graceful no-JS fallback. -->
+<div class="chat" id="chat" hidden>
+  <div class="chat__panel" id="chat-panel" role="dialog" aria-modal="false"
+       data-i18n-aria-label="chat.title" hidden>
+    <div class="chat__head">
+      <p class="chat__title" data-i18n="chat.title">Ask about my CV</p>
+      <button type="button" class="chat__close" id="chat-close"
+              data-i18n-aria-label="chat.closeLabel" data-i18n-title="chat.closeLabel">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="chat__log" id="chat-log" role="log" aria-live="polite" aria-atomic="false"></div>
+
+    <p class="chat__status" id="chat-status" hidden>
+      <span class="chat__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span data-i18n="chat.thinking">Thinking…</span>
+    </p>
+
+    <form class="chat__form" id="chat-form">
+      <label class="visually-hidden" for="chat-input" data-i18n="chat.inputLabel">Your question</label>
+      <textarea class="chat__input" id="chat-input" rows="1" maxlength="1000"
+                data-i18n-aria-label="chat.inputLabel" data-i18n-placeholder="chat.placeholder"></textarea>
+      <button type="submit" class="chat__send" id="chat-send"
+              data-i18n-aria-label="chat.sendLabel" data-i18n-title="chat.sendLabel">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h15"/><path d="M13 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </form>
+
+    <p class="chat__note" data-i18n="chat.disclaimer">AI-generated answers may be inaccurate.</p>
+  </div>
+
+  <button type="button" class="chat__fab" id="chat-fab" aria-expanded="false" aria-controls="chat-panel"
+          data-i18n-aria-label="chat.openLabel" data-i18n-title="chat.openLabel">
+    <svg class="chat__fab-icon chat__fab-icon--open" viewBox="0 0 24 24" width="22" height="22"
+         fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.6-.4L4 21l1.4-4.2A8.2 8.2 0 0 1 3.6 11.5 8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/>
+    </svg>
+    <svg class="chat__fab-icon chat__fab-icon--close" viewBox="0 0 24 24" width="20" height="20"
+         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </svg>
+  </button>
+</div>
+
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
+<script src="js/chat.js"></script>
 </body>
 </html>
